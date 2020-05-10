@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Personne;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,8 +13,10 @@ class PersonneController extends AbstractController
      */
     public function index()
     {
+        $repository = $this->getDoctrine()->getRepository(Personne::class);
+        $personne = $repository->findAll();
         return $this->render('personne/index.html.twig', [
-            'controller_name' => 'PersonneController',
+            'personnes' => $personne,
         ]);
     }
 }
