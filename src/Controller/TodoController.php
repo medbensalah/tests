@@ -68,4 +68,32 @@ class TodoController extends AbstractController
         return $this->redirectToRoute('todo');
     }
 
+    /**
+     * @Route("/todo/update/{name}/{desc}",name="todo.update")
+     */
+    public function update(SessionInterface $session, $name, $desc) {
+        if ($session->has('todos')) {
+            $todos=$session->get('todos');
+            if (!isset($todos[$name])) {
+                $this->addFlash('error', "le todo $name n\'existe pas");
+            }
+            else {
+                $todos[$name] = $desc;
+                $session->set('todos', $todos);
+                $this->addFlash('success', "le todo $name a ete ajoute avec succes");
+            }
+        }
+        else {
+            $this->addFlash('error', 'la session n exite pas');
+        }
+        return $this->redirectToRoute('todo');
+    }
+
+    /**
+     * @Route("/todo/logout", name="todo.logout")
+     */
+    public function logout(SessionInterface $session) {
+        $session->clear();
+        return $this->redirectToRoute('todo');
+    }
 }
