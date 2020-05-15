@@ -104,10 +104,29 @@
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active">{% block pageTitle %}Page{% endblock %}</li>
                 </ol>
-                <div class="row">
-                    {% block body %}
 
-                    {% endblock %}
+                {% for message in app.session.flashBag.get('info') %}
+                    <div class="alert alert-info">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.session.flashBag.get('error') %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.session.flashBag.get('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                <div class="container">
+                    <div class="row">
+                        {% block body %}
+
+                        {% endblock %}
+                    </div>
                 </div>
             </div>
         </main>
