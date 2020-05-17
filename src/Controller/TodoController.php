@@ -89,11 +89,4 @@ class TodoController extends AbstractController
         return $this->redirectToRoute('todo');
     }
 
-    /**
-     * @Route("/todo/logout", name="todo.logout")
-     */
-    public function logout(SessionInterface $session) {
-        $session->clear();
-        return $this->redirectToRoute('todo');
-    }
 }
