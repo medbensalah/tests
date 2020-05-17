@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -45,6 +47,26 @@ class Personne
      * @ORM\Column(type="integer", unique=true)
      */
     private $cin;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Section", inversedBy="personnes")
+     */
+    private $section;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Cours", inversedBy="personnes")
+     */
+    private $cours;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\SocialMedia", cascade={"persist", "remove"})
+     */
+    private $socialMedia;
+
+    public function __construct()
+    {
+        $this->cours = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -119,6 +141,56 @@ class Personne
     public function setCin(int $cin): self
     {
         $this->cin = $cin;
+
+        return $this;
+    }
+
+    public function getSection(): ?Section
+    {
+        return $this->section;
+    }
+
+    public function setSection(?Section $section): self
+    {
+        $this->section = $section;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Cours[]
+     */
+    public function getCours(): Collection
+    {
+        return $this->cours;
+    }
+
+    public function addCour(Cours $cour): self
+    {
+        if (!$this->cours->contains($cour)) {
+            $this->cours[] = $cour;
+        }
+
+        return $this;
+    }
+
+    public function removeCour(Cours $cour): self
+    {
+        if ($this->cours->contains($cour)) {
+            $this->cours->removeElement($cour);
+        }
+
+        return $this;
+    }
+
+    public function getSocialMedia(): ?SocialMedia
+    {
+        return $this->socialMedia;
+    }
+
+    public function setSocialMedia(?SocialMedia $socialMedia): self
+    {
+        $this->socialMedia = $socialMedia;
 
         return $this;
     }
